@@ -37,6 +37,7 @@ jobs:
           #    vs the current commit
           # 3. For PRs, diff the base ref vs the current commit
           # 4. For everything else (e.g., dispatches), build all images
+          git branch -v
           if [[ $GITHUB_EVENT_NAME == 'pull_request' ]] ||
              [[ $GITHUB_EVENT_NAME == 'push' ]]; then
                if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
