@@ -37,18 +37,16 @@ jobs:
           #    vs the current commit
           # 3. For PRs, diff the base ref vs the current commit
           # 4. For everything else (e.g., dispatches), build all images
-          git fetch --all
-          git branch -v
           if [[ $GITHUB_EVENT_NAME == 'pull_request' ]] ||
              [[ $GITHUB_EVENT_NAME == 'push' ]]; then
                if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
                    BASE=${{github.event.before}}
                else
-                   BASE=main
+                   BASE=refs/remotes/origin/main
                fi
                # GITHUB_BASE_REF is only set for PRs
                image_dirs=$(git diff --name-only \
-                                     "${GITHUB_BASE_REF:-$BASE}" \
+                                     origin/"${GITHUB_BASE_REF:-$BASE}" \
                                      "$GITHUB_SHA")
           else
                image_dirs=$(find . -type d -printf "%P\n")
