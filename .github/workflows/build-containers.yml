@@ -41,7 +41,7 @@ jobs:
              [[ $GITHUB_EVENT_NAME == 'push' ]]; then
                if [[ -n $GITHUB_BASE_REF ]]; then
                    BASE=origin/$GITHUB_BASE_REF
-               if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+               elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
                    BASE=${{github.event.before}}
                else
                    BASE=refs/remotes/origin/main
