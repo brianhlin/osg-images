@@ -39,15 +39,19 @@ jobs:
           # 4. For everything else (e.g., dispatches), build all images
           if [[ $GITHUB_EVENT_NAME == 'pull_request' ]] ||
              [[ $GITHUB_EVENT_NAME == 'push' ]]; then
+               if [[ -n $GITHUB_BASE_REF ]]; then
+                   BASE=origin/$GITHUB_BASE_REF
                if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
                    BASE=${{github.event.before}}
                else
                    BASE=refs/remotes/origin/main
                fi
+               echo $BASE
                # GITHUB_BASE_REF is only set for PRs
                image_dirs=$(git diff --name-only \
-                                     "${GITHUB_BASE_REF:-$BASE}" \
+                                     "$BASE" \
                                      "$GITHUB_SHA")
+                echo $image_dirs
           else
                image_dirs=$(find . -type d -printf "%P\n")
           fi
