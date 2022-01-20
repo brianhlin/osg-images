@@ -46,7 +46,7 @@ jobs:
                fi
                # GITHUB_BASE_REF is only set for PRs
                image_dirs=$(git diff --name-only \
-                                     origin/"${GITHUB_BASE_REF:-$BASE}" \
+                                     "${GITHUB_BASE_REF:-$BASE}" \
                                      "$GITHUB_SHA")
           else
                image_dirs=$(find . -type d -printf "%P\n")
