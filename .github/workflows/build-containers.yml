@@ -92,7 +92,7 @@ jobs:
           echo "Matrix JSON content: $json_content"  # Debugging line
           
           # Use jq to extract the include array safely
-          matrix=$(echo "$json_content" | jq -c '.include')
+          matrix=$(echo "$json_content" | jq -c '{ .include')
           
           # Ensure the extracted matrix is valid JSON
           echo "Parsed Matrix: $matrix"  # Another debugging line
