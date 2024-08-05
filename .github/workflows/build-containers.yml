@@ -81,13 +81,13 @@ jobs:
       - name: Run build-job-matrix script
         id: run-python-script
         run: |
-          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }})
-          echo "matrix=${matrix_json}" >> $GITHUB_OUTPUT
-            
+          python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} > matrix.json
+          echo "matrix=$(cat matrix.json)" >> $GITHUB_OUTPUT
+  
       - name: Verify matrix output
         run: |
           echo "Matrix configuration:"
-          echo "${{ steps.run-python-script.outputs.matrix }}"
+          cat matrix.json
 
   build:
     runs-on: ubuntu-latest
