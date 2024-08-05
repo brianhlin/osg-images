@@ -88,7 +88,9 @@ jobs:
         id: set_matrix
         run: |
           json_content=$(cat matrix.json)
-          echo "::set-output name=matrix::$(echo $json_content | jq -c '.include')"
+          echo "Matrix JSON content: $json_content"  # Debugging line
+          matrix=$(echo "$json_content" | jq -c '.include')
+          echo "::set-output name=matrix::$matrix"
 
       - name: Verify matrix.json
         run: |
