@@ -67,11 +67,9 @@ jobs:
                                       -type d \
                                       -printf "$ORG_DIR/%P\n")
           fi
-
           image_json=$(echo -n "${images:-dummy}" | jq -Rcs '.|split("\n") | map(select(. != ""))')
           echo "$image_json" > image_list.json
           echo "images=$(echo $images | tr '\n' ' ')" >> $GITHUB_OUTPUT
-
       - name: Display image list
         run: cat image_list.json
 
@@ -84,13 +82,14 @@ jobs:
         id: run-python-script
         run: |
           matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }})
-          echo "::set-output name=matrix::$(echo $matrix_json | jq -c .)"
-
+          echo "matrix_json=$matrix_json" >> $GITHUB_ENV
+          echo "::set-output name=matrix::$matrix_json"
+        
       - name: Verify matrix output
         run: |
           echo "Matrix configuration:"
           echo "${{ steps.run-python-script.outputs.matrix }}"
-
+  
   build:
     runs-on: ubuntu-latest
     needs: build-image-list
