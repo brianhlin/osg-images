@@ -80,18 +80,14 @@ jobs:
 
       - name: Run build-job-matrix script
         id: run-python-script
-        run: python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }}
-    
-      - name: Read JSON and set as output
-        id: set_matrix
         run: |
-          json_content=$(cat scripts/grouped_output.json)
-          echo "::set-output name=matrix::$(echo $json_content | jq -c '.include')"
-          
-      - name: Verify scripts/output.json
+          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }})
+          echo "matrix=${matrix_json}" >> $GITHUB_OUTPUT
+            
+      - name: Verify matrix output
         run: |
-          echo "Content of scripts/grouped_output.json:"
-          cat scripts/grouped_output.json
+          echo "Matrix configuration:"
+          echo "${{ steps.run-python-script.outputs.matrix }}"
 
   build:
     runs-on: ubuntu-latest
