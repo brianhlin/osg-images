@@ -87,10 +87,18 @@ jobs:
       - name: Read JSON and set as output
         id: set_matrix
         run: |
+          # Read the content of the JSON file
           json_content=$(cat matrix.json)
           echo "Matrix JSON content: $json_content"  # Debugging line
+          
+          # Use jq to extract the include array safely
           matrix=$(echo "$json_content" | jq -c '.include')
-          echo "::set-output name=matrix::$matrix"
+          
+          # Ensure the extracted matrix is valid JSON
+          echo "Parsed Matrix: $matrix"  # Another debugging line
+          
+          # Set the matrix output
+          echo "matrix=$matrix" >> $GITHUB_ENV
 
       - name: Verify matrix.json
         run: |
