@@ -82,12 +82,18 @@ jobs:
         id: run-python-script
         run: |
           matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }})
-          echo "matrix=${matrix_json}" >> $GITHUB_OUTPUT
-        
-      - name: Verify matrix output
+          echo "$matrix_json" > matrix.json
+
+      - name: Read JSON and set as output
+        id: set_matrix
         run: |
-          echo "Matrix configuration:"
-          echo "${{ steps.run-python-script.outputs.matrix }}"
+          json_content=$(cat matrix.json)
+          echo "::set-output name=matrix::$(echo $json_content | jq -c '.include')"
+
+      - name: Verify matrix.json
+        run: |
+          echo "Content of matrix.json:"
+          cat matrix.json
 
   build:
     runs-on: ubuntu-latest
