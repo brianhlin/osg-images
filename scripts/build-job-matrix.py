@@ -51,7 +51,7 @@ def main(image_dirs):
 
     # Clear stdout and print JSON output
     sys.stdout.flush()  # Clear stdout before printing JSON
-    json_output = json.dumps({"include": include_list}, indent=4)
+    json_output = json.dumps(include_list)
     print(json_output)
 
 if __name__ == "__main__":

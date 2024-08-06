@@ -83,9 +83,7 @@ jobs:
         run: |
           # Run Python script and capture JSON output
           matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | tail -n +2)
-          # Use jq to extract the 'include' part of the JSON
-          matrix=$(echo "$matrix_json" | jq -c '.include')
-          echo "::set-output name=matrix::$matrix"
+          echo "::set-output name=matrix::$matrix_json"
       
       - name: Verify matrix content
         run: |
