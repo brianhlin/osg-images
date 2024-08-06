@@ -83,25 +83,15 @@ jobs:
         run: |
           # Capture stdout and filter only JSON content
           matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | tail -n +2)
-          
-          # Debugging output to ensure correct capture
-          echo "Matrix JSON content from stdout: $matrix_json"
-          
-          # Use jq to extract the 'include' array safely
-          matrix=$(echo "$matrix_json" | jq -c '.include')
-          
-          # Debugging output to check parsed matrix content
-          echo "Parsed Matrix: $matrix"
+          echo "$matrix_json" > matrix_output.json
 
-          # Save parsed matrix to a file for workflow output
-          echo "$matrix" > matrix_output.json
-        
       - name: Set matrix output
         id: set-matrix
         run: |
-          matrix=$(cat matrix_output.json)
-          echo "::set-output name=matrix::$matrix"
-
+          # Read JSON from the file and set the matrix output
+          json_content=$(cat matrix_output.json)
+          echo "::set-output name=matrix::$(echo $json_content | jq -c '.include')"
+          
       - name: Verify matrix content
         run: |
           echo "Content of matrix:"
