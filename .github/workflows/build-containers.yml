@@ -83,18 +83,14 @@ jobs:
         run: |
           # Run Python script and capture JSON output
           matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | tail -n +2)
-
-      - name: Set matrix output
-        id: set-matrix
-        run: |
-          # Use Python to extract and validate JSON
-          matrix=$(python -c "import sys, json; data = json.load(open('matrix_output.json')); print(json.dumps(data['include']))")
+          # Extract the 'include' part of the JSON without writing to a file
+          matrix=$(echo "$matrix_json" | python -c "import sys, json; data = json.load(sys.stdin); print(json.dumps(data['include']))")
           echo "::set-output name=matrix::$matrix"
-
+      
       - name: Verify matrix content
         run: |
           echo "Content of matrix:"
-          echo "${{ steps.set-matrix.outputs.matrix }}"
+          echo "${{ steps.run-python-script.outputs.matrix }}"
   build:
     runs-on: ubuntu-latest
     needs: build-image-list
