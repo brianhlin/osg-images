@@ -20,7 +20,7 @@ jobs:
   build-image-list:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set_matrix.outputs.matrix }}
+      matrix: ${{ steps.run-python-script.outputs.matrix }}
     steps:
       - uses: actions/checkout@v3
         with:
