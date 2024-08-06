@@ -82,21 +82,23 @@ jobs:
         id: run-python-script
         run: |
           # Capture stdout and filter only JSON content
-          json_output=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | tail -n +2)
+          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | tail -n +2)
           
           # Debugging output to ensure correct capture
-          echo "JSON output from script: $json_output"
+          echo "Matrix JSON content from script: $matrix_json"
           
           # Save the entire JSON to a file
-          echo "$json_output" > json_output.json
+          echo "$matrix_json" > matrix_output.json
 
-      - name: Set JSON content output
-        id: set-json
+      - name: Set matrix output
+        id: set-matrix
         run: |
-          # Read JSON from the file and ensure it's valid JSON
-          json_content=$(cat json_output.json | jq -c '.include')
-          echo "::set-output name=json_content::$json_content"
-          
+          # Read JSON from the file and ensure it's valid
+          json_content=$(cat matrix_output.json)
+          # Properly format the JSON with quotes
+          formatted_json=$(echo "$json_content" | jq -c '.include')
+          echo "::set-output name=matrix::$formatted_json"
+
       - name: Verify matrix content
         run: |
           echo "Content of matrix:"
