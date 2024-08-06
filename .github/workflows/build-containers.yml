@@ -94,18 +94,18 @@ jobs:
           echo "Parsed Matrix: $matrix"
         
       - name: Set matrix output
-        id: set_matrix
-        run: echo "matrix=${{ env.MATRIX }}" >> $GITHUB_OUTPUT
-  
+        id: set-matrix
+        run: echo "matrix=${MATRIX}" >> $GITHUB_OUTPUT
+
       - name: Verify matrix content
         run: |
           echo "Content of matrix:"
-          echo "${{ steps.set_matrix.outputs.matrix }}"
+          echo "${{ needs.build-image-list.outputs.matrix }}"
 
   build:
     runs-on: ubuntu-latest
     needs: build-image-list
-    if: needs.build-image-list.outputs.matrix != '["dummy"]'
+    if: needs.build-image-list.outputs.images != '["dummy"]'
     # Prevent a single build failure from killing the workflow.
     # This is safe since subsequent pushes should fail on cache load
     continue-on-error: true
