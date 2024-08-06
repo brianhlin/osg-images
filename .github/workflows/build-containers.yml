@@ -82,12 +82,13 @@ jobs:
         id: run-python-script
         run: |
           # Run Python script and capture JSON output
-          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }})
+          # Use awk to filter and keep only JSON part
+          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | awk '/^{/{flag=1;next}/}/{print}/}/&&flag')
 
           # Debugging output to ensure correct capture
-          echo "Matrix JSON content from script: $matrix_json"
+          echo "Filtered Matrix JSON content: $matrix_json"
 
-          # Ensure JSON is formatted with quotes using echo and jq
+          # Ensure JSON is formatted with quotes using jq
           formatted_json=$(echo "$matrix_json" | jq -c '.include')
 
           # Set the matrix output
