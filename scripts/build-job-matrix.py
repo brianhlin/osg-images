@@ -49,7 +49,8 @@ def main(image_dirs):
             configuration_string = f"{base_os}-{osg_series}-{base_repo}-{config['standard_build']}-{config['repo_build']}"
             include_list.append({"name": image_name, "config": configuration_string})
 
-    # Print JSON output to stdout
+    # Clear stdout and print JSON output
+    sys.stdout.flush()  # Clear stdout before printing JSON
     json_output = json.dumps({"include": include_list}, indent=4)
     print(json_output)
 

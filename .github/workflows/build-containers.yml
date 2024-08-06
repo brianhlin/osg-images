@@ -81,29 +81,25 @@ jobs:
       - name: Run build-job-matrix script
         id: run-python-script
         run: |
-          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }})
-          echo "$matrix_json" > matrix.json
+          # Capture stdout and filter only JSON content
+          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | tail -n +2)
+          
+          # Debugging output to ensure correct capture
+          echo "Matrix JSON content from stdout: $matrix_json"
+          
+          # Use jq to extract the 'include' array safely
+          matrix=$(echo "$matrix_json" | jq -c '.include')
+          
+          # Debugging output to check parsed matrix content
+          echo "Parsed Matrix: $matrix"
+          
+          # Set the matrix as output
+          echo "::set-output name=matrix::$matrix"
 
-      - name: Read JSON and set as output
-        id: set_matrix
+      - name: Verify matrix content
         run: |
-          # Read the content of the JSON file
-          json_content=$(cat matrix.json)
-          echo "Matrix JSON content: $json_content"  # Debugging line
-          
-          # Use jq to extract the include array safely
-          matrix=$(echo "$json_content" | jq -c '{ .include')
-          
-          # Ensure the extracted matrix is valid JSON
-          echo "Parsed Matrix: $matrix"  # Another debugging line
-          
-          # Set the matrix output
-          echo "matrix=$matrix" >> $GITHUB_ENV
-
-      - name: Verify matrix.json
-        run: |
-          echo "Content of matrix.json:"
-          cat matrix.json
+          echo "Content of matrix:"
+          echo "${{ needs.build-image-list.outputs.matrix }}"
 
   build:
     runs-on: ubuntu-latest
