@@ -85,16 +85,16 @@ jobs:
           echo "$matrix_json" > matrix_output.json
           echo "matrix=${{matrix}}" >> $GITHUB_OUTPUT
 
-      - name: Verify matrix content
-        run: |
-          echo "Content of matrix:"
-          cat matrix_output.json
-
       - name: Set matrix output
         id: set-matrix
         run: |
           matrix=$(python -c "import sys, json; data = json.load(open('matrix_output.json')); print(json.dumps(data['include']))")
           echo "::set-output name=matrix::$matrix"
+
+      - name: Verify matrix content
+        run: |
+          echo "Content of matrix:"
+          cat matrix_output.json
   build:
     runs-on: ubuntu-latest
     needs: build-image-list
