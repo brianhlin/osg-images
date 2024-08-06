@@ -93,11 +93,10 @@ jobs:
       - name: Set matrix output
         id: set-matrix
         run: |
-          # Read JSON from the file and ensure it's valid
+          # Read JSON from the file
           json_content=$(cat matrix_output.json)
-          # Properly format the JSON with quotes
-          formatted_json=$(echo "$json_content" | jq -c '.include')
-          echo "::set-output name=matrix::$formatted_json"
+          # Pass the JSON content with proper quotes
+          echo "::set-output name=matrix::$(echo "$json_content" | jq -c '.include')"
 
       - name: Verify matrix content
         run: |
