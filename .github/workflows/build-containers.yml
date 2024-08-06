@@ -83,7 +83,7 @@ jobs:
         run: |
           # Run Python script and capture JSON output
           # Use awk to filter and keep only JSON part
-          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | awk '/^{/{flag=1;next}/}/{print}/}/&&flag')
+          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | tail -n +2)
 
           # Debugging output to ensure correct capture
           echo "Filtered Matrix JSON content: $matrix_json"
