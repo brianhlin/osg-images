@@ -81,7 +81,7 @@ jobs:
       - name: Run build-job-matrix script
         id: run-python-script
         run: |
-          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | tail -n +2)
+          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | grep -o '{.*}' | jq -c '.')
           echo "$matrix_json" > matrix_output.json
           echo "matrix=$matrix_json" >> $GITHUB_OUTPUT
 
