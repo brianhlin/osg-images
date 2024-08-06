@@ -92,15 +92,20 @@ jobs:
           
           # Debugging output to check parsed matrix content
           echo "Parsed Matrix: $matrix"
+
+          # Save parsed matrix to a file for workflow output
+          echo "$matrix" > matrix_output.json
         
       - name: Set matrix output
         id: set-matrix
-        run: echo "matrix=${MATRIX}" >> $GITHUB_OUTPUT
+        run: |
+          matrix=$(cat matrix_output.json)
+          echo "::set-output name=matrix::$matrix"
 
       - name: Verify matrix content
         run: |
           echo "Content of matrix:"
-          echo "${{ needs.build-image-list.outputs.matrix }}"
+          echo "${{ steps.set-matrix.outputs.matrix }}"
 
   build:
     runs-on: ubuntu-latest
