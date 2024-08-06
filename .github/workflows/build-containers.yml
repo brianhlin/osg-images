@@ -81,22 +81,16 @@ jobs:
       - name: Run build-job-matrix script
         id: run-python-script
         run: |
-          # Capture stdout and filter only JSON content
+          # Run Python script and capture JSON output
           matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | tail -n +2)
-          
-          # Debugging output to ensure correct capture
-          echo "Matrix JSON content from script: $matrix_json"
-          
-          # Save the entire JSON to a file
           echo "$matrix_json" > matrix_output.json
 
       - name: Set matrix output
         id: set-matrix
         run: |
-          # Read JSON from the file
-          json_content=$(cat matrix_output.json)
-          # Pass the JSON content with proper quotes
-          echo "::set-output name=matrix::$(echo "$json_content" | jq -c '.include')"
+          # Use Python to extract and validate JSON
+          matrix=$(python -c "import sys, json; data = json.load(open('matrix_output.json')); print(json.dumps(data['include']))")
+          echo "::set-output name=matrix::$matrix"
 
       - name: Verify matrix content
         run: |
