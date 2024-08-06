@@ -82,7 +82,7 @@ jobs:
         id: run-python-script
         run: |
           # Run Python script and capture JSON output
-          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }} | tail -n +2)
+          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }})
           echo "::set-output name=matrix::$matrix_json"
       
       - name: Verify matrix content
