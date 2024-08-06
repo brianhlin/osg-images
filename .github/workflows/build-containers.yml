@@ -92,8 +92,11 @@ jobs:
           
           # Debugging output to check parsed matrix content
           echo "Parsed Matrix: $matrix"
-          
-          # Set the matrix as output
+        
+      - name: Set matrix output
+        id: set_matrix
+        run: |
+          echo "Matrix content being set: $matrix"
           echo "::set-output name=matrix::$matrix"
 
       - name: Verify matrix content
