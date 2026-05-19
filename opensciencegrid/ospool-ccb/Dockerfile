@@ -30,10 +30,6 @@ RUN if [[ $BASE_YUM_REPO = release ]]; then \
       yum -y install condor; \
     fi
 
-# FIXME: when we drop EL7 for this image,
-#  change this back to a python3-prometheus_client RPM install
-RUN python3 -m pip install prometheus_client
-
 # basic config is a collector, so we can test
 RUN echo "DAEMON_LIST = MASTER, COLLECTOR" >/etc/condor/config.d/05-ospool-base.config && \
     echo "USE_SHARED_PORT = TRUE"         >>/etc/condor/config.d/05-ospool-base.config
@@ -45,19 +41,13 @@ RUN chmod 755 /usr/sbin/condor_master_wrapper
 COPY supervisord.conf /etc/supervisord.conf
 
 COPY 10-htcondor.conf /etc/supervisord.d/
-COPY 30-prometheus.conf /etc/supervisord.d/
 
-COPY ospool-cm-config.sh /etc/osg/image-init.d/60-ospool-cm-config.sh
-RUN chmod 755 /etc/osg/image-init.d/60-ospool-cm-config.sh
+COPY ospool-ccb-config.sh /etc/osg/image-init.d/60-ospool-ccb-config.sh
+RUN chmod 755 /etc/osg/image-init.d/60-ospool-ccb-config.sh
 
-COPY ospool.cron /etc/cron.d/ospool
+COPY ospool-ccb.cron /etc/cron.d/ospool-ccb
 
 ADD opt/ospool /opt/ospool
 
-COPY ospool-overview /opt/ospool-overview
-
-ADD prometheus.py /prometheus.py
-
 ADD healthy.sh /healthy.sh
-ADD --chmod=0755 count_errors_since.py /bin/count_errors_since.py
 
