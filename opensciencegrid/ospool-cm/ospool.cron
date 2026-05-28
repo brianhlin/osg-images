@@ -1,4 +1,7 @@
 
+# configuration changes
+ */5 * * * *  root  /bin/bash -c 'sleep $(( RANDOM \% 240 )); /etc/osg/image-init.d/60-ospool-cm-config.sh' >/var/log/ospool-cm-config.log 2>&1
+
 # logs
   0  * * * *  root  /opt/ospool/retain-logs >/dev/null 2>&1
 
