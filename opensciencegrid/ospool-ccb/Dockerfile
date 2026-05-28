@@ -8,10 +8,7 @@ FROM opensciencegrid/software-base:$BASE_OSG_SERIES-$BASE_OS-$BASE_YUM_REPO
 # has to be redefined for use in the RUN stages
 ARG BASE_YUM_REPO
 
-RUN yum -y distro-sync && \
-    yum -y install \
-      epel-release && \
-    yum -y install \
+RUN yum -y install \
       bc \
       git \
       lsof \
