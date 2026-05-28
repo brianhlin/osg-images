@@ -11,7 +11,7 @@ ARG BASE_YUM_REPO
 RUN yum -y distro-sync && \
     yum -y install \
       epel-release && \
-    yum -y install \
+RUN yum -y install && \
       bc \
       git \
       lsof \
