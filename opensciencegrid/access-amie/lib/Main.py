@@ -240,7 +240,9 @@ Thank you,<br>
 OSG User Facilitation
 </p>
 '''
-        self.freshdesk.send_email(user_email, subject, body, tags=["access_account"])
+        # do not send emails to pearc'26 users
+        if project_id != "TG-CIS260991":
+            self.freshdesk.send_email(user_email, subject, body, tags=["access_account"])
         self.amie.save_packet(packet, 'incoming', 'parked')
 
     def data_account_create(self, packet):
