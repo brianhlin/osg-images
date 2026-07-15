@@ -1,4 +1,4 @@
-Xrootd Standalone Docker Image [![Build Status](https://travis-ci.org/opensciencegrid/docker-xrootd-standalone.svg?branch=master)](https://travis-ci.org/opensciencegrid/docker-xrootd-standalone)
+Xrootd Standalone Docker Image
 ==============================
 
 This image is based on the [osg-xrootd-standalone RPM](https://github.com/opensciencegrid/Software-Redhat/tree/trunk/osg-xrootd).
