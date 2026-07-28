@@ -91,10 +91,15 @@ jobs:
       - name: Set matrix output
         id: set-matrix
         run: |
-          # Run Python script and capture JSON output
-          matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }})
-          # Use jq to extract the 'include' part of the JSON
-          matrix=$(echo "$matrix_json" | jq -c '.include')
+          # Handle empty images var, i.e. no images were changed
+          # N.B. an empty GHA output var results in a space
+          if [[ "${{ steps.image-list.outputs.images }}" != " " ]]; then
+            matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }})
+            # Use jq to extract the 'include' part of the JSON
+            matrix=$(echo "$matrix_json" | jq -c '.include')
+          else
+            matrix="[]"
+          fi
           echo "::set-output name=matrix::$matrix"
           
         
