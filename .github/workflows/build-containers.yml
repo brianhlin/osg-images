@@ -92,8 +92,9 @@ jobs:
         id: set-matrix
         run: |
           # Handle empty images var, i.e. no images were changed
-          # N.B. an empty GHA output var results in a space
-          if [[ "${{ steps.image-list.outputs.images }}" != " " ]]; then
+          # N.B. an empty GHA output var results in a space, so look for non-space characters instead of just length
+          IMAGES="${{ steps.image-list.outputs.images }}"
+          if [[ $IMAGES =~ [^[:space:]] ]]; then
             matrix_json=$(python scripts/build-job-matrix.py ${{ steps.image-list.outputs.images }})
             # Use jq to extract the 'include' part of the JSON
             matrix=$(echo "$matrix_json" | jq -c '.include')
