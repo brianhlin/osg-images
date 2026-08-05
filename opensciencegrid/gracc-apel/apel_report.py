@@ -14,6 +14,7 @@ import requests
 import json
 from statistics import mean
 from math import isclose
+import certifi
 
 
 #logging.basicConfig(level=logging.WARN)
@@ -25,7 +26,7 @@ es = opensearchpy.OpenSearch(
 osg_raw_index = 'gracc.osg.raw-*'
 osg_summary_index = 'gracc.osg.summary'
 
-vo_list = ['atlas', 'alice', 'belle', 'cms', 'enmr.eu', 'lhcb']
+vo_list = ['atlas', 'alice', 'belle', 'cms', 'enmr.eu', 'lhcb', 'dune']
 
 MAXSZ=2**30
 MISSING='__MISSING__'
