@@ -24,7 +24,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       image_list: ${{ steps.image-list.outputs.image_list }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
@@ -84,7 +84,7 @@ jobs:
         run: cat image_list.json
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.x'
 
@@ -121,7 +121,7 @@ jobs:
       matrix:
         include: ${{ fromJson(needs.build-image-list.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         # Example of a matrix configuration string:
         # {el9-23-development-True-False}
       - name: Print raw matrix configuration
@@ -173,7 +173,7 @@ jobs:
       matrix:
         include: ${{ fromJson(needs.build-image-list.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         # Example of a matrix configuration string:
         # {el9-23-development-True-False}
       - name: Print raw matrix configuration
