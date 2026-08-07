@@ -153,7 +153,7 @@ jobs:
 
       - name: Build Image
         continue-on-error: ${{ matrix.yum_repo == 'development' }}
-        uses: opensciencegrid/build-container-action@v0.6.0
+        uses: opensciencegrid/build-container-action@v0.8.1
         with:
           osg_series: ${{ env.OSG_SERIES }}
           osg_repo: ${{ env.BASE_REPO }}
