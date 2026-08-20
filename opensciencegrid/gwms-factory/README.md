@@ -1,7 +1,7 @@
 
 # GlideinWMS Factory docker image
 
-This container is a work-in-progress for the GlideinWMS factory image.
+This container is a GlideinWMS factory image.
 
 To launch, one must mount in the glideinWMS.xml and provide a configuration
 repository.  Here is the example invocation used by the developer:
